@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fantôme ou KKK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        header {
+            background-color: #111827;
+            border-bottom: 1px solid #1f2937;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .logo-title h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .top-ten-header-btn {
+            font-size: 12px;
+            color: #818cf8;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            padding: 0;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .top-ten-header-btn:hover {
+            color: #a5b4fc;
+            text-decoration: underline;
+        }
+
+        .score-badge {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #818cf8;
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .card {
+            background-color: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 650px;
+            padding: 25px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        #entry-screen h2, #welcome-screen h2, #end-screen h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        #entry-screen p, #welcome-screen p {
+            color: #9ca3af;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .welcome-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .start-btn, .action-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.1s ease, opacity 0.2s;
+            width: 100%;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+            margin-bottom: 10px;
+        }
+
+        .start-btn:active, .action-btn:active, .choice-btn:active {
+            transform: scale(0.97);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background-color: #1f2937;
+            border-radius: 3px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            max-height: 420px;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #1f2937;
+        }
+
+        .image-wrapper img {
+            max-width: 100%;
+            max-height: 420px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .result-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            animation: fadeIn 0.2s ease-in-out;
+            z-index: 10;
+        }
+
+        .result-badge.correct {
+            background-color: #10b981;
+            color: #ffffff;
+        }
+
+        .result-badge.incorrect {
+            background-color: #ef4444;
+            color: #ffffff;
+        }
+
+        .choices-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .choice-btn {
+            background-color: #1f2937;
+            color: #ffffff;
+            border: 1px solid #374151;
+            padding: 18px 16px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .choice-btn:hover {
+            background-color: #374151;
+            border-color: #4b5563;
+        }
+
+        .choice-btn.ghost {
+            border-left: 4px solid #6366f1;
+        }
+
+        .choice-btn.kkk {
+            border-left: 4px solid #ef4444;
+        }
+
+        .feedback-container {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .feedback-container.correct-text {
+            color: #34d399;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .feedback-container.incorrect-text {
+            color: #f87171;
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .form-group {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px;
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #6366f1;
+        }
+
+        .celebration-box {
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 16px;
+            animation: bounceIn 0.5s ease;
+        }
+
+        /* Fenêtre Modale Top 10 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            animation: bounceIn 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #1f2937;
+            padding-bottom: 12px;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            color: #ffffff;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background-color: #1f2937;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .leaderboard-item:nth-child(1) { border-left: 4px solid #fbbf24; }
+        .leaderboard-item:nth-child(2) { border-left: 4px solid #94a3b8; }
+        .leaderboard-item:nth-child(3) { border-left: 4px solid #b45309; }
+
+        .firework {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px #fff;
+            animation: explode 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        footer a {
+            color: #818cf8;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes explode {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0.1); opacity: 0; }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            70% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 12px;
+            color: #6b7280;
+            border-top: 1px solid #1f2937;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo-icon">👻</div>
+            <div class="logo-title">
+                <h1>Fantôme ou KKK</h1>
+                <button class="top-ten-header-btn" onclick="openLeaderboard()">🏆 Top 10 des scores</button>
+            </div>
+        </div>
+        <div id="score-display" class="score-badge hidden">Score : 0 / 22</div>
+    </header>
+
+    <div class="main-container">
+        <!-- ÉCRAN 0 : Bouton d'entrée -->
+        <div id="entry-screen" class="card">
+            <div class="welcome-icon">🔒</div>
+            <h2>Accès au Quiz</h2>
+            <p>Cliquez sur le bouton ci-dessous pour entrer et commencer l'expérience interactive.</p>
+            <button class="start-btn" onclick="enterSite()">Entrer sur le site</button>
+        </div>
+
+        <!-- ÉCRAN 1 : Accueil / Consignes -->
+        <div id="welcome-screen" class="card hidden">
+            <div class="welcome-icon">🎭</div>
+            <h2>Prêt à relever le défi ?</h2>
+            <p>Testez votre sens de l'observation à travers <strong>22 questions</strong>. Pour chaque image, déterminez s'il s'agit d'un <strong>Fantôme</strong> ou de <strong>KKK</strong>.</p>
+            <button class="start-btn" onclick="startQuiz()">Commencer le jeu →</button>
+        </div>
+
+        <!-- ÉCRAN 2 : Quiz actif -->
+        <div id="quiz-screen" class="card hidden">
+            <div class="quiz-header">
+                <span id="question-counter">Question 1 / 22</span>
+            </div>
+            
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+
+            <div class="image-wrapper">
+                <div id="result-badge" class="result-badge hidden"></div>
+                <img id="quiz-image" src="" alt="Question" onerror="handleImageError()">
+            </div>
+
+            <!-- Boutons de choix (avant réponse) -->
+            <div id="choice-buttons" class="choices-container">
+                <button class="choice-btn ghost" onclick="selectAnswer('F')">👻 Fantôme</button>
+                <button class="choice-btn kkk" onclick="selectAnswer('K')">🔴 KKK</button>
+            </div>
+
+            <!-- Zone de correction et bouton suivant (après réponse) -->
+            <div id="post-answer-area" class="hidden">
+                <div id="feedback-text" class="feedback-container"></div>
+                <button class="action-btn" style="margin-top: 15px;" onclick="nextQuestion()">Question Suivante →</button>
+            </div>
+        </div>
+
+        <!-- ÉCRAN 3 : Enregistrement de pseudo & Résultat final -->
+        <div id="end-screen" class="card hidden">
+            <div id="celebration-badge" class="celebration-box"></div>
+            <h2>Partie Terminée !</h2>
+            <p id="final-score-text" style="font-size: 18px; margin: 10px 0; color: #ffffff;"></p>
+            
+            <div class="form-group">
+                <label for="pseudo-input">Entrez votre pseudo pour enregistrer votre score :</label>
+                <input type="text" id="pseudo-input" class="form-input" placeholder="Votre pseudo..." maxlength="20">
+            </div>
+
+            <button id="save-score-btn" class="start-btn" onclick="saveScoreAndRestart()" style="margin-bottom: 10px;">Enregistrer & Recommencer</button>
+            <button class="choice-btn" onclick="startQuiz()" style="width: 100%; justify-content: center; background-color: #374151; border: none;">Rejouer sans sauvegarder</button>
+        </div>
+    </div>
+
+    <!-- MODALE TOP 10 -->
+    <div id="leaderboard-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🏆 Top 10 des Meilleurs Scores</h3>
+                <button class="close-modal" onclick="closeLeaderboard()">&times;</button>
+            </div>
+            <ul id="leaderboard-list" class="leaderboard-list">
+                <!-- Rempli dynamiquement -->
+            </ul>
+            <button class="start-btn" onclick="closeLeaderboard()" style="margin-bottom: 0;">Fermer</button>
+        </div>
+    </div>
+
+    <footer>
+        Jeu interactif - <a href="https://www.coursesu.com/p/boisson-a-base-de-vodka-aromatisee-cerise-poliakov-cherry-32-70-cl/2017616.html" target="_blank">Vodka pas cher</a>
+    </footer>
+
+    <script>
+        const API_URL = "https://api-fantome-ou-kkk.kjh27r4i-70a.workers.dev";
+
+        const questions = [
+            { q: "Q001F.jpg", type: "F", r: "R001.jpg" },
+            { q: "Q002F.jpg", type: "F", r: "R002.jpg" },
+            { q: "Q003K.jpg", type: "K", r: "R003.jpg" },
+            { q: "Q004K.jpg", type: "K", r: "R004.jpg" },
+            { q: "Q005K.jpg", type: "K", r: "R005.jpg" },
+            { q: "Q006K.jpg", type: "K", r: "R006.jpg" },
+            { q: "Q007F.jpg", type: "F", r: "R007.jpg" },
+            { q: "Q008F.jpg", type: "F", r: "R008.jpg" },
+            { q: "Q009F.jpg", type: "F", r: "R009.jpg" },
+            { q: "Q010F.jpg", type: "F", r: "R010.jpg" },
+            { q: "Q011F.jpg", type: "F", r: "R011.jpg" },
+            { q: "Q012K.jpg", type: "K", r: "R012.jpg" },
+            { q: "Q013K.jpg", type: "K", r: "R013.jpg" },
+            { q: "Q014K.jpg", type: "K", r: "R014.jpg" },
+            { q: "Q015K.jpg", type: "K", r: "R015.jpg" },
+            { q: "Q016K.jpg", type: "K", r: "R016.avif" },
+            { q: "Q017K.jpg", type: "K", r: "R017.jpg" },
+            { q: "Q018K.jpg", type: "K", r: "R018.jpg" },
+            { q: "Q019K.jpg", type: "K", r: "R019.jpg" },
+            { q: "Q020F.jpg", type: "F", r: "R020.jpg" },
+            { q: "Q021F.jpg", type: "F", r: "R021.jpg" },
+            { q: "Q022F.jpg", type: "F", r: "R022.jpg" }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let answered = false;
+        let gameActive = false;
+
+        function enterSite() {
+            document.getElementById('entry-screen').classList.add('hidden');
+            document.getElementById('welcome-screen').classList.remove('hidden');
+        }
+
+        function startQuiz() {
+            currentIndex = 0;
+            score = 0;
+            gameActive = true;
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('end-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            document.getElementById('score-display').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            answered = false;
+            const currentObj = questions[currentIndex];
+            
+            document.getElementById('quiz-image').src = currentObj.q;
+            
+            document.getElementById('question-counter').innerText = `Question ${currentIndex + 1} / ${questions.length}`;
+            const progressPct = ((currentIndex) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPct}%`;
+            
+            document.getElementById('choice-buttons').classList.remove('hidden');
+            document.getElementById('post-answer-area').classList.add('hidden');
+            
+            const badge = document.getElementById('result-badge');
+            badge.classList.add('hidden');
+            badge.className = 'result-badge hidden';
+        }
+
+        function selectAnswer(userChoice) {
+            if (!gameActive || answered) return;
+            answered = true;
+
+            const currentObj = questions[currentIndex];
+            const isCorrect = (userChoice === currentObj.type);
+
+            if (isCorrect) {
+                score++;
+            }
+            updateScoreDisplay();
+
+            document.getElementById('quiz-image').src = currentObj.r;
+
+            const badge = document.getElementById('result-badge');
+            badge.classList.remove('hidden');
+            if (isCorrect) {
+                badge.className = 'result-badge correct';
+                badge.innerText = 'Correct ! 🎉';
+            } else {
+                badge.className = 'result-badge incorrect';
+                badge.innerText = 'Incorrect ❌';
+            }
+
+            document.getElementById('choice-buttons').classList.add('hidden');
+            document.getElementById('post-answer-area').classList.remove('hidden');
+
+            const feedbackText = document.getElementById('feedback-text');
+            const correctName = currentObj.type === 'F' ? 'Fantôme' : 'KKK';
+            
+            if (isCorrect) {
+                feedbackText.className = 'feedback-container correct-text';
+                feedbackText.innerHTML = `Bonne réponse ! C'était : <strong>${correctName}</strong>`;
+            } else {
+                feedbackText.className = 'feedback-container incorrect-text';
+                feedbackText.innerHTML = `Mauvaise réponse. C'était : <strong>${correctName}</strong>`;
+            }
+        }
+
+        function nextQuestion() {
+            if (!gameActive) return;
+            currentIndex++;
+            if (currentIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showEndScreen();
+            }
+        }
+
+        function showEndScreen() {
+            gameActive = false;
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('score-display').classList.add('hidden');
+            document.getElementById('end-screen').classList.remove('hidden');
+            
+            const percentage = Math.round((score / questions.length) * 100);
+            document.getElementById('final-score-text').innerHTML = `Votre score : <strong>${score} / ${questions.length}</strong> (${percentage}%)`;
+
+            const celebrationBox = document.getElementById('celebration-badge');
+            
+            if (score <= 7) {
+                celebrationBox.style.backgroundColor = "rgba(239, 68, 68, 0.15)";
+                celebrationBox.style.color = "#f87171";
+                celebrationBox.style.border = "1px solid rgba(239, 68, 68, 0.3)";
+                celebrationBox.innerHTML = "🌱 Débutant motivé ! Continuez à vous entraîner.";
+            } else if (score <= 14) {
+                celebrationBox.style.backgroundColor = "rgba(245, 158, 11, 0.15)";
+                celebrationBox.style.color = "#fbbf24";
+                celebrationBox.style.border = "1px solid rgba(245, 158, 11, 0.3)";
+                celebrationBox.innerHTML = "⭐ Pas mal du tout ! Vous avez un bon œil.";
+            } else if (score <= 21) {
+                celebrationBox.style.backgroundColor = "rgba(99, 102, 241, 0.15)";
+                celebrationBox.style.color = "#818cf8";
+                celebrationBox.style.border = "1px solid rgba(99, 102, 241, 0.3)";
+                celebrationBox.innerHTML = "🔥 Excellent score ! Vous maîtrisez parfaitement le sujet !";
+            } else {
+                celebrationBox.style.backgroundColor = "rgba(16, 185, 129, 0.2)";
+                celebrationBox.style.color = "#34d399";
+                celebrationBox.style.border = "1px solid rgba(16, 185, 129, 0.4)";
+                celebrationBox.innerHTML = "🏆 SCORE PARFAIT ! 22/22 - Maître absolu de l'observation !";
+                triggerFireworks();
+            }
+        }
+
+        async function saveScoreAndRestart() {
+            const pseudo = document.getElementById('pseudo-input').value.trim() || "Anonyme";
+            const saveBtn = document.getElementById('save-score-btn');
+
+            saveBtn.disabled = true;
+            saveBtn.innerText = "Enregistrement...";
+
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pseudo: pseudo, score: score })
+                });
+            } catch (err) {
+                console.error("Erreur enregistrement :", err);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerText = "Enregistrer & Recommencer";
+                startQuiz();
+            }
+        }
+
+        async function openLeaderboard() {
+            const modal = document.getElementById('leaderboard-modal');
+            const listContainer = document.getElementById('leaderboard-list');
+            listContainer.innerHTML = `<li style="text-align: center; color: #9ca3af; padding: 20px;">Chargement du Top 10...</li>`;
+            modal.classList.remove('hidden');
+
+            try {
+                const res = await fetch(API_URL);
+                const top10 = await res.json();
+                listContainer.innerHTML = '';
+
+                if (!top10 || top10.length === 0) {
+                    listContainer.innerHTML = `<li style="text-align: center; color: #9ca3af; padding: 20px;">Aucun score enregistré pour l'instant.</li>`;
+                } else {
+                    top10.forEach((item, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'leaderboard-item';
+                        li.innerHTML = `
+                            <span><strong>#${index + 1}</strong> ${escapeHtml(item.pseudo)}</span>
+                            <span><strong>${item.score} / 22</strong> <small style="color:#9ca3af; margin-left:8px;">(${item.date || ''})</small></span>
+                        `;
+                        listContainer.appendChild(li);
+                    });
+                }
+            } catch (err) {
+                listContainer.innerHTML = `<li style="text-align: center; color: #f87171; padding: 20px;">Erreur de chargement des scores.</li>`;
+            }
+        }
+
+        function closeLeaderboard() {
+            document.getElementById('leaderboard-modal').classList.add('hidden');
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        window.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            if (gameActive) {
+                if (!answered) {
+                    if (key === 'f' || key === 'arrowleft') {
+                        selectAnswer('F');
+                    } else if (key === 'k' || key === 'arrowright') {
+                        selectAnswer('K');
+                    }
+                } else {
+                    if (key === ' ' || key === 'enter') {
+                        e.preventDefault();
+                        nextQuestion();
+                    }
+                }
+            }
+        });
+
+        function triggerFireworks() {
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    createParticle(window.innerWidth / 2 + (Math.random() * 300 - 150), window.innerHeight / 2 + (Math.random() * 200 - 100));
+                }, i * 50);
+            }
+        }
+
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'firework';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 150 + 50;
+            particle.style.setProperty('--tx', `${Math.cos(angle) * distance}px`);
+            particle.style.setProperty('--ty', `${Math.sin(angle) * distance}px`);
+            
+            const colors = ['#10b981', '#6366f1', '#f59e0b', '#ec4899', '#3b82f6'];
+            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 1000);
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('score-display').innerText = `Score : ${score} / ${questions.length}`;
+        }
+
+        function handleImageError() {
+            const img = document.getElementById('quiz-image');
+            if (!img.src.includes('data:image')) {
+                img.src = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%231f2937'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-family='sans-serif' font-size='14px'%3EImage introuvable localement%3C/text%3E%3C/svg%3E";
+            }
+        }
+    </script>
+</body>
+</html>
